@@ -35,9 +35,16 @@ void setup() {
 
 void draw() {
 
+  thread("readPipe");
+  
   if (end != null) {
     end.drawEndScene();
-  } else { 
+      if(gesture.equals("Reset")){
+ 
+        resetGame();
+      }
+    }
+   else { 
     background(0);
     drawStar();
 
@@ -47,7 +54,7 @@ void draw() {
     drawBullets();
    
     //start an asychronous thread to read the data from the "myfifo" pipe between recognition engine and this sketch.
-    thread("readPipe");
+    
     //print("read gesture: "+ gesture);
     
     if(gesture!= null){
@@ -100,14 +107,13 @@ void reactToGesture(String lastGesture){
     else if(lastGesture.equals("Back"))
       playerShip.downPressed = true;
       
+      
+   
+      
     else if(lastGesture.equals("Fire")){
-
-  
          Bullet b = new Bullet(playerShip);
          bullets.add(b);
          b.drawBullet();
-
-
     }    
 }  
 
@@ -179,11 +185,14 @@ void drawStar() {
   }
 }
 
+/*
 void mousePressed() {
   if (end != null && end.mouseOverButton() == true) {
     resetGame();
   }
 }
+
+*/
 
 void resetGame() {
   stars.clear();

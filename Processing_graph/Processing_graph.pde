@@ -3,9 +3,9 @@ float[] gestureOne=null;
 float[] gestureTwo = null;
 float[] gestureThree = null;
 
-float[][] gesturePoints = new float[6][2];
-float[] gestureDist = new float[6];
-String[] names = {"Nothing", "Left", "Right","Forward", "Back", "Fire"};
+float[][] gesturePoints = new float[7][2];
+float[] gestureDist = new float[7];
+String[] names = {"Nothing", "Left", "Right","Forward", "Back", "Fire", "Reset"};
 
 String[] packetToSpaceShooter = new String[1]; //this is the name of the gesture that is being sent to the game sketch.
 
@@ -42,13 +42,18 @@ void draw() {
     pushStyle();
     MyArduinoGraph.yMax=1000;      
     MyArduinoGraph.yMin=-200;      
+    MyArduinoGraph.DrawAxis();    
+    MyArduinoGraph.smoothLine(Time3, Voltage3);
+    popStyle();
+    popMatrix();
+
     /* ====================================================================
      Gesture compare
      ====================================================================  */
     float totalDist = 0;
     int currentMax = 0;
     float currentMaxValue = -1;
-    for (int i = 0; i < 6;i++)
+    for (int i = 0; i < 7;i++)
 
     {
 
@@ -74,9 +79,9 @@ void draw() {
         currentMaxValue =  gestureDist[i];
       }
     }
-    totalDist=totalDist /5;
+    totalDist=totalDist /6;
 
-    for (int i = 0; i < 6;i++)
+    for (int i = 0; i < 7;i++)
     {
       float currentAmmount = 0;
       currentAmmount = 1-gestureDist[i]/totalDist;
