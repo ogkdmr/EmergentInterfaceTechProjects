@@ -1,4 +1,6 @@
 //Originally made and coded by Logan Fitzgerald using Processing3
+import java.util.Queue;
+
 
 ArrayList<Star> stars = new ArrayList<Star>();
 int frequency = 4; //frequency of star | LOWER == MORE STARS
@@ -28,7 +30,7 @@ void setup() {
   frameRate(30);
   points = 0;
   
-  //starting to listen to the com4 port for arduino.
+  //starting to listen to the com4 port for arduino
 }
 
 void draw() {
@@ -42,7 +44,7 @@ void draw() {
     drawAsteroid();
     fill(255, 0, 0);
     stroke(255);
-    drawBullet();
+    drawBullets();
    
     //start an asychronous thread to read the data from the "myfifo" pipe between recognition engine and this sketch.
     thread("readPipe");
@@ -61,7 +63,8 @@ void draw() {
     text("Points: " + points, 50, 50);
 
     checkCollision();
- 
+     
+    
   }
 }
 
@@ -71,7 +74,10 @@ void draw() {
 void refreshLastGesture(){
   playerShip.leftPressed = false;
   playerShip.rightPressed = false;
-}
+  playerShip.upPressed = false;
+  playerShip.downPressed = false;
+  
+} 
 
 /*
   Helper method that updates the ship's direction based on the last gesture read by the engine in the other sketch.
@@ -82,27 +88,44 @@ void refreshLastGesture(){
 void reactToGesture(String lastGesture){
     
     refreshLastGesture();
+    
+    if(lastGesture.equals("Left"))
+      playerShip.leftPressed = true;
+    
+    else if(lastGesture.equals("Right"))
+      playerShip.rightPressed = true;
+      
+    else if(lastGesture.equals("Forward"))
+      playerShip.upPressed = true;
+      
+    else if(lastGesture.equals("Back"))
+      playerShip.downPressed = true;
+      
+    else if(lastGesture.equals("Fire")){
+
   
-    if(lastGesture.equals("Touch")){
-       playerShip.leftPressed = true;
-    }
-    
-    if(lastGesture.equals("Grab")){
-       playerShip.rightPressed = true;
-    }
-    
-    if(lastGesture.equals("In water")){
-       //I want maximum 5 bullets at any given time.
-       if(bullets.size()<=5){
          Bullet b = new Bullet(playerShip);
          bullets.add(b);
-       }
+         b.drawBullet();
+
+/*
+        try
+{
+
+    Thread.sleep(75);
+}
+catch(InterruptedException ex)
+{
+    Thread.currentThread().interrupt();
+}*/
     }
 
+ 
+    
 }  
 
 
-void drawBullet() {
+void drawBullets() {
  
     for (int i = 0; i< bullets.size(); i++) {
       //i is every number from 0 to the size of the bullet array
@@ -114,25 +137,30 @@ void drawBullet() {
 
 void checkCollision() {
   for (int i = 0; i < asteroids.size(); i++) {
-    Asteroid a = asteroids.get(i);
-    if (a.checkCollision(playerShip) == true) {
-      end = new EndScene(points);
-    }
-    for (int b = 0; b < bullets.size(); b++) {
-      Bullet bullet = bullets.get(b);
-      if (a.checkCollision(bullet) == true) {
-        //set up removal of bullet and astroid
-
-        points++;
-
-        asteroids.remove(a);
-        bullets.remove(bullet);
-        i--;
-        b--;
-      }
+    try{
+        Asteroid a = asteroids.get(i);
+        if (a.checkCollision(playerShip) == true){
+        end = new EndScene(points);
+        }
+        
+        for (int b = 0; b < bullets.size(); b++) {
+          Bullet bullet = bullets.get(b);
+          if (a.checkCollision(bullet) == true) {
+            //set up removal of bullet and astroid.
+            points++;
+            asteroids.remove(a);
+            bullets.remove(bullet);
+            i--;
+            b--;
+            }  
+          }
+        }  
+    catch(ArrayIndexOutOfBoundsException e){
+      //do nothing.
+        }      
     }
   }
-}
+
 
 
 void drawAsteroid() {
@@ -162,6 +190,7 @@ void drawStar() {
     Star currentStar = stars.get(i);
     currentStar.drawStar();
   }
+}
 
 
 //leaving these here but they won't be needed since I changed the way user interacts with the game.
@@ -232,5 +261,5 @@ void readPipe(){
   }
   catch(ArrayIndexOutOfBoundsException exp){
     //do nothing because it does not affect the game play or crash the game etc.
+    }
   }
-}

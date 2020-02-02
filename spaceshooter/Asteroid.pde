@@ -32,7 +32,7 @@ class Asteroid {
     } else if (other instanceof Bullet) {
       Bullet bullet = (Bullet) other;
       float distance = dist(x, y, bullet.x, bullet.y); 
-      println(distance);
+      //println(distance);
       if (distance <= size/2 + bullet.size/2 ) {
         fill(0, 255, 0, 100);
         rect(0, 0, width, height);
