@@ -42,12 +42,6 @@ void draw() {
     pushStyle();
     MyArduinoGraph.yMax=1000;      
     MyArduinoGraph.yMin=-200;      
-    MyArduinoGraph.xMax=int (max(Time3));
-    MyArduinoGraph.DrawAxis();    
-    MyArduinoGraph.smoothLine(Time3, Voltage3);
-    popStyle();
-    popMatrix();
-
     /* ====================================================================
      Gesture compare
      ====================================================================  */

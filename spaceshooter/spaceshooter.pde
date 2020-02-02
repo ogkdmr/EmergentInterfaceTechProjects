@@ -84,7 +84,6 @@ void refreshLastGesture(){
   ** To be called within the draw() loop.
 
 */
-
 void reactToGesture(String lastGesture){
     
     refreshLastGesture();
@@ -108,20 +107,8 @@ void reactToGesture(String lastGesture){
          bullets.add(b);
          b.drawBullet();
 
-/*
-        try
-{
 
-    Thread.sleep(75);
-}
-catch(InterruptedException ex)
-{
-    Thread.currentThread().interrupt();
-}*/
-    }
-
- 
-    
+    }    
 }  
 
 
@@ -189,47 +176,6 @@ void drawStar() {
   for (int i = 0; i<stars.size(); i++) {
     Star currentStar = stars.get(i);
     currentStar.drawStar();
-  }
-}
-
-
-//leaving these here but they won't be needed since I changed the way user interacts with the game.
-//no more keystrokes anymore, instead gestures.
-void keyPressed() {
-  if (key == CODED) {
-    if (keyCode == UP) {
-      playerShip.upPressed = true;
-    } else if (keyCode == DOWN) {
-      playerShip.downPressed = true;
-    } else if (keyCode == LEFT) {
-      playerShip.leftPressed = true;
-    } else if (keyCode == RIGHT) {
-      playerShip.rightPressed = true;
-    }
-  } else if (key == ' ') {
-    Bullet b = new Bullet(playerShip);
-    bullets.add(b);
-
-    //if (bullet == null) {
-    //bullet = new Bullet(playShip);
-    //}
-
-    //Assume we're in the right location
-    //bullet = null;
-  }
-}
-
-
-//Leaving these here but they won't be needed.
-void keyReleased() {
-  if (keyCode == UP) {
-    playerShip.upPressed = false;
-  } else if (keyCode == DOWN) {
-    playerShip.downPressed = false;
-  } else if (keyCode == LEFT) {
-    playerShip.leftPressed = false;
-  } else if (keyCode == RIGHT) {
-    playerShip.rightPressed = false;
   }
 }
 
