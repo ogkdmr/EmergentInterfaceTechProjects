@@ -34,13 +34,13 @@ void setup() {
 }
 
 void draw() {
-
+  
   thread("readPipe");
   
   if (end != null) {
     end.drawEndScene();
       if(gesture.equals("Reset")){
- 
+        
         resetGame();
       }
     }
